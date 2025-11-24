@@ -1,3 +1,10 @@
+Organizadores: 
+
+André
+Leticia
+Luiza
+Miguel
+
 # Projeto Completo de Infraestrutura, Virtualização, Segurança e Portal Web (IIS)
 
 Este repositório reúne **todo o projeto de infraestrutura** desenvolvido, incluindo:
