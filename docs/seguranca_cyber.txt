@@ -1,0 +1,119 @@
+✅ 1. Configurar DNS seguro (Cloudflare + Google)
+
+Arquivo de config do resolv.conf (temporário):
+
+sudo bash -c 'cat > /etc/resolv.conf <<EOF
+nameserver 1.1.1.1
+nameserver 8.8.8.8
+EOF'
+
+
+Tornar persistente (systemd-resolved):
+
+sudo bash -c 'cat > /etc/systemd/resolved.conf <<EOF
+[Resolve]
+DNS=1.1.1.1 8.8.8.8
+DNSSEC=yes
+EOF'
+
+sudo systemctl restart systemd-resolved
+
+✅ 2. Instalar VPN (OpenVPN)
+sudo apt update
+sudo apt install openvpn -y
+
+
+Conectar usando arquivo .ovpn:
+
+sudo openvpn --config meu_servidor.ovpn
+
+✅ 3. Habilitar Firewall (UFW) e regras básicas
+
+Instalar e habilitar:
+
+sudo apt install ufw -y
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw enable
+
+
+Permitir SSH (se você usa):
+
+sudo ufw allow ssh
+
+✅ 4. Criar senhas fortes automaticamente
+
+Gerar senha de 20 caracteres:
+
+openssl rand -base64 20
+
+✅ 5. Aplicar atualizações de segurança
+sudo apt update && sudo apt upgrade -y
+sudo apt install unattended-upgrades -y
+sudo dpkg-reconfigure --priority=low unattended-upgrades
+
+✅ 6. Antivírus – instalar ClamAV
+sudo apt install clamav clamav-daemon -y
+sudo freshclam
+
+
+Scan completo:
+
+sudo clamscan -r / --bell --infected
+
+✅ 7. Ativar logs de segurança
+
+Instalar e habilitar auditd:
+
+sudo apt install auditd audispd-plugins -y
+sudo systemctl enable auditd
+sudo systemctl start auditd
+
+
+Ver logs:
+
+sudo ausearch -m avc
+
+✅ 8. Criar backups automáticos (rsync + cron)
+
+Backup diário para uma pasta externa:
+
+sudo mkdir -p /backup
+
+
+Adicionar no cron (abre editor):
+
+crontab -e
+
+
+Inserir:
+
+0 2 * * * rsync -a --delete /home/usuario/ /backup/
+
+✅ 9. Testes básicos de vulnerabilidade
+Instalar Nmap:
+sudo apt install nmap -y
+
+
+Scan simples (não-invasivo):
+
+nmap -sV -T4 192.168.0.1
+
+Instalar OpenVAS (Greenbone) – versão simplificada
+sudo apt install openvas -y
+sudo gvm-setup
+sudo gvm-check-setup
+
+⚠️ 10. Sobre Kali Linux ou ParrotOS
+
+Não é obrigatório instalar para testes básicos.
+Mas, se quiser instalar em máquina virtual:
+
+Kali:
+
+sudo apt install kali-tools-top10 -y
+
+
+Parrot:
+
+sudo apt install parrot-tools-full -y

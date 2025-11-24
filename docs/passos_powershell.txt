@@ -1,0 +1,8 @@
+https://dashboard.ngrok.com/get-started/your-authtoken
+Pegar o token
+
+Abrir o power shell
+cd C:\ngrok
+.\ngrok.exe config add-authtoken COLE AQUI O TOKEN
+.\ngrok.exe http 8080
+entrar nesse link: 

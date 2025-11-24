@@ -1,0 +1,41 @@
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0c2c22;
+  color:white;
+  text-align:center;
+}
+
+header{
+  background:#093a30;
+  padding:1rem;
+  color:white;
+}
+
+nav a{
+  margin:0 10px;
+  color:#9fffe0;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+nav a[aria-current="page"]{
+  color:#fff;
+  text-decoration:underline;
+}
+
+.card{
+  background:#0f3b33;
+  margin:2rem auto;
+  padding:1rem;
+  max-width:800px;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+footer{
+  padding:1rem;
+  background:#093a30;
+  color:white;
+  margin-top:2rem;
+}

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Game – PortalAplicacoes</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    canvas {
+      background:#111;
+      display:block;
+      margin:1rem auto;
+      max-width:100%;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Mini-Game: Pong</h1>
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="status.html">Status</a>
+    <a href="game.html" aria-current="page">Game</a>
+  </nav>
+</header>
+
+<main>
+  <section class="card">
+    <canvas id="cv" width="640" height="360"></canvas>
+    <p>Use as setas ↑ ↓ para jogar. Primeiro a 5 pontos vence.</p>
+    <pre id="score"></pre>
+  </section>
+</main>
+
+<footer>© PortalAplicacoes</footer>
+
+<script>
+  window.requestAnimationFrame = window.requestAnimationFrame
+    || window.msRequestAnimationFrame
+    || window.webkitRequestAnimationFrame
+    || function(cb){ return setTimeout(cb,16); };
+  window.cancelAnimationFrame = window.cancelAnimationFrame
+    || window.msCancelAnimationFrame
+    || window.webkitCancelAnimationFrame
+    || clearTimeout;
+
+  var cv=document.getElementById('cv');
+  var cx=cv.getContext && cv.getContext('2d');
+  if(!cx){
+    document.getElementById('score').textContent="Seu navegador não suporta Canvas.";
+  } else {
+    var py=cv.height/2-40, vy=0, gy=6, ph=80, pw=10;
+    var bx=cv.width/2, by=cv.height/2, vx=4, vyb=3, r=7;
+    var aiY=cv.height/2-ph/2, aiSpeed=3; var sL=0, sR=0; var anim;
+
+    function rect(x,y,w,h){ cx.fillRect(x,y,w,h); }
+    function circle(x,y,rr){ cx.beginPath(); cx.arc(x,y,rr,0,Math.PI*2); cx.fill(); }
+
+    function draw(){
+      cx.clearRect(0,0,cv.width,cv.height);
+      cx.fillStyle="#0f0"; rect(20,py,pw,ph);
+      cx.fillStyle="#0ff"; rect(cv.width-20-pw,aiY,pw,ph);
+      cx.fillStyle="#fff"; circle(bx,by,r);
+    }
+
+    function reset(){
+      bx=cv.width/2; by=cv.height/2;
+      vx=(Math.random()>0.5?4:-4);
+      vyb=(Math.random()>0.5?3:-3);
+    }
+
+    function step(){
+      py+=vy; if(py<0)py=0; if(py>cv.height-ph)py=cv.height-ph;
+      bx+=vx; by+=vyb; if(by<r||by>cv.height-r)vyb*=-1;
+
+      if(bx-r<20+pw && by>py && by<py+ph && vx<0){
+        vx*=-1.1; vyb+=(Math.random()-0.5)*2; bx=20+pw+r;
+      }
+      if(bx+r>cv.width-20-pw && by>aiY && by<aiY+ph && vx>0){
+        vx*=-1.1; vyb+=(Math.random()-0.5)*2; bx=cv.width-20-pw-r;
+      }
+
+      var target=by-ph/2; aiY += (target>aiY?aiSpeed:-aiSpeed);
+      if(aiY<0)aiY=0; if(aiY>cv.height-ph)aiY=cv.height-ph;
+
+      if(bx<0){ sR++; reset(); }
+      if(bx>cv.width){ sL++; reset(); }
+
+      draw();
+      document.getElementById('score').textContent="Placar: Você "+sL+" x "+sR+" CPU";
+
+      if(sL>=5||sR>=5){
+        cancelAnimationFrame(anim);
+        document.getElementById('score').textContent+=" — Fim!";
+        return;
+      }
+
+      anim=requestAnimationFrame(step);
+    }
+
+    draw();
+    anim=requestAnimationFrame(step);
+
+    addEventListener('keydown',function(e){
+      if(e.keyCode===38)vy=-gy;
+      if(e.keyCode===40)vy=gy;
+    });
+    addEventListener('keyup',function(e){
+      if(e.keyCode===38 || e.keyCode===40)vy=0;
+    });
+  }
+</script>
+
+</body>
+</html>
