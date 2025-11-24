@@ -1,8 +1,8 @@
 Organizadores: 
 
-André
-Leticia
-Luiza
+André,
+Leticia,
+Luiza,
 Miguel
 
 # Projeto Completo de Infraestrutura, Virtualização, Segurança e Portal Web (IIS)
